@@ -6,9 +6,9 @@ config = {
     "language": "en",
     "units": "metric",  # Units for weather ("metric" for Celsius, "imperial" for Fahrenheit)
     "weather": {
-        "api_key": "YOUR_OPENWEATHERMAP_API_KEY",  # Replace with your OpenWeatherMap API key
-        "lat": 40.776676,  # Latitude for your location
-        "lon": -73.971321,  # Longitude for your location
+        "api_key": "045d9994e00389311caee651ccbe6f88",  # Replace with your OpenWeatherMap API key
+        "lat": 76.4930,  # Latitude for your location
+        "lon": 44.2334,  # Longitude for your location
     },
     "time_format": 24,  # 24-hour or 12-hour time format
 }
