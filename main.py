@@ -134,7 +134,7 @@ def update_weather(weather_label, weather_icon_label, config):
         description = weather["description"].lower()
         icon_filename = weather_icon_map.get(description, "default_sun.png")  # Fallback to default icon
         try:
-            icon_path = os.path.join(os.path.dirname(__file__), "icons", icon_filename)
+            icon_path = os.path.join(os.path.dirname(__file__), "weather_icons", icon_filename)
             img = recolor_icon_to_white(icon_path)  # Recolor dynamically
             img = img.resize((50, 50))  # Resize icon
             icon = ImageTk.PhotoImage(img)
