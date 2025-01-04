@@ -179,11 +179,13 @@ def main():
         root, text="Loading weather...", font=("Times New Roman", 30), fg="white", bg="black", borderwidth=2, relief="solid"
     )
     weather_label.pack(anchor="w", pady=10, padx=20)
-    update_weather(weather_label, config)
 
     # Weather Icon
     weather_icon_label = tk.Label(root, bg="black")
     weather_icon_label.pack(anchor="w", padx=20, pady=5)
+
+    # Corrected call to update_weather
+    update_weather(weather_label, weather_icon_label, config)
 
     # Calendar Widget
     calendar_label = tk.Label(
