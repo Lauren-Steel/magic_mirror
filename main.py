@@ -89,7 +89,7 @@ def update_weather(weather_label, config):
         weather_label.config(text=weather_text)
     else:
         weather_label.config(text="Error fetching weather data.")
-    weather_label.after(600000, update_weather, weather_label, config)
+    weather_label.after(10000, update_weather, weather_label, config)
 
 def update_calendar(calendar_label):
     """Update the calendar events displayed on the label."""
