@@ -8,6 +8,7 @@ from google.auth.transport.requests import Request
 import os
 import pickle
 import pytz
+from PIL import Image, ImageTk
 
 # SCOPES defines the level of access to the Google Calendar API
 SCOPES = ['https://www.googleapis.com/auth/calendar.readonly']
@@ -43,6 +44,9 @@ def fetch_calendar_events():
         # Convert to UTC for the Google Calendar API
         now_utc = now_eastern.astimezone(pytz.utc)
         now = now_utc.isoformat()  # ISO format for the API
+
+        print(f"TimeMin for API call: {now}")
+        print(f"Fetched events: {events}")
 
         # Fetch events starting from now
         events_result = service.events().list(
@@ -122,25 +126,37 @@ def main():
     # Create main window
     root = tk.Tk()
     root.title("Smart Display")
-
-    # Configure full screen
     root.geometry("800x480")  # Adjust as per your display
     root.configure(bg="black")
 
+    # Header
+    header_label = tk.Label(
+        root, text="Smart Display", font=("Helvetica", 36, "bold"), fg="cyan", bg="black"
+    )
+    header_label.pack(pady=10)
+
     # Time Widget
-    time_label = tk.Label(root, text="", font=("Helvetica", 48), fg="white", bg="black")
-    time_label.pack(pady=20)
+    time_label = tk.Label(root, text="", font=("Helvetica", 60, "bold"), fg="white", bg="black", borderwidth=2, relief="solid")
+    time_label.pack(pady=10)
     update_time(time_label, config["time_format"])
 
     # Weather Widget
-    weather_label = tk.Label(root, text="Loading weather...", font=("Helvetica", 24), fg="white", bg="black")
-    weather_label.pack(pady=20)
+    weather_label = tk.Label(root, text="Loading weather...", font=("Helvetica", 30), fg="white", bg="black", borderwidth=2, relief="solid")
+    weather_label.pack(pady=10)
     update_weather(weather_label, config)
 
     # Calendar Widget
-    calendar_label = tk.Label(root, text="Loading calendar...", font=("Helvetica", 18), fg="white", bg="black", justify="left", anchor="w")
-    calendar_label.pack(pady=20, padx=20, anchor="w")
+    calendar_label = tk.Label(
+        root, text="Loading calendar...", font=("Helvetica", 20, "italic"), fg="white", bg="black", justify="left", anchor="w", borderwidth=2, relief="solid"
+    )
+    calendar_label.pack(pady=10, padx=20)
     update_calendar(calendar_label)
+
+    # Footer
+    footer_label = tk.Label(
+        root, text="Powered by Raspberry Pi", font=("Helvetica", 14), fg="gray", bg="black"
+    )
+    footer_label.pack(side="bottom", pady=10)
 
     # Run the tkinter event loop
     root.mainloop()
