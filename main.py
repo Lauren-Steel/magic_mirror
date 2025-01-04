@@ -8,10 +8,20 @@ from google.auth.transport.requests import Request
 import os
 import pickle
 import pytz
-from PIL import Image, ImageTk
+from PIL import Image, ImageTk, ImageOps
 
 # SCOPES defines the level of access to the Google Calendar API
 SCOPES = ['https://www.googleapis.com/auth/calendar.readonly']
+
+weather_icon_map = {
+    "snow": "snow.png",
+    "clear sky": "default_sun.png",
+    "rain": "rain.png",
+    "clouds": "cloud.png",
+    "few clouds": "partly_cloud.png",
+    "light rain": "rain.png",
+    "overcast clouds": "cloud.png",
+}
 
 def authenticate_google_calendar():
     """Authenticate with Google Calendar API."""
@@ -88,8 +98,22 @@ def update_time(time_label, time_format):
     time_label.config(text=f"Time: {time_string}")
     time_label.after(1000, update_time, time_label, time_format)
 
-def update_weather(weather_label, config):
-    """Fetch and update weather data on the label."""
+def recolor_icon_to_white(icon_path):
+    """Recolor the icon to white for better visibility on black background."""
+    img = Image.open(icon_path).convert("RGBA")
+    data = img.getdata()
+    new_data = []
+    for item in data:
+        # Replace non-transparent pixels with white
+        if item[3] > 0:  # Alpha > 0 (not transparent)
+            new_data.append((255, 255, 255, item[3]))  # White with original transparency
+        else:
+            new_data.append(item)  # Keep transparency
+    img.putdata(new_data)
+    return img
+
+def update_weather(weather_label, weather_icon_label, config):
+    """Fetch and update weather data and icon on the label."""
     weather = fetch_weather(
         config["weather"]["api_key"],
         config["weather"]["lat"],
@@ -102,9 +126,22 @@ def update_weather(weather_label, config):
             f"{weather['temperature']}°C, {weather['description']}"
         )
         weather_label.config(text=weather_text)
+
+        # Update the weather icon
+        description = weather["description"].lower()
+        icon_filename = weather_icon_map.get(description, "default_sun.png")  # Fallback to default icon
+        try:
+            icon_path = f"icons/{icon_filename}"
+            img = recolor_icon_to_white(icon_path)  # Recolor dynamically
+            img = img.resize((50, 50))  # Resize icon
+            icon = ImageTk.PhotoImage(img)
+            weather_icon_label.config(image=icon)
+            weather_icon_label.image = icon  # Keep reference to avoid garbage collection
+        except Exception as e:
+            print(f"Error loading weather icon: {e}")
     else:
         weather_label.config(text="Error fetching weather data.")
-    weather_label.after(600000, update_weather, weather_label, config)
+    weather_label.after(600000, update_weather, weather_label, weather_icon_label, config)  # Update every 10 minutes
 
 def update_calendar(calendar_label):
     """Update the calendar events displayed on the label."""
@@ -142,6 +179,10 @@ def main():
     )
     weather_label.pack(anchor="w", pady=10, padx=20)
     update_weather(weather_label, config)
+
+    # Weather Icon
+    weather_icon_label = tk.Label(root, bg="black")
+    weather_icon_label.pack(anchor="w", padx=20, pady=5)
 
     # Calendar Widget
     calendar_label = tk.Label(
