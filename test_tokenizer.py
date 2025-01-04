@@ -1,7 +1,10 @@
 from transformers import LlamaTokenizer
 
-tokenizer_path = "/Users/laurensteel/Documents/5X/cap_stone/my_git/models/Llama3.2-1B"
-tokenizer = LlamaTokenizer.from_pretrained(tokenizer_path, legacy=True)
-print("Tokenizer loaded successfully!")
+tokenizer_path = "/Users/laurensteel/.llama/checkpoints/Llama3.2-1B/tokenizer.model"
 
+try:
+    tokenizer = LlamaTokenizer.from_pretrained(tokenizer_path)
+    print("Hugging Face tokenizer loaded successfully!")
+except Exception as e:
+    print(f"Error with Hugging Face tokenizer: {e}")
 
