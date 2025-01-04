@@ -7,6 +7,7 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 import os
 import pickle
+import pytz
 
 # SCOPES defines the level of access to the Google Calendar API
 SCOPES = ['https://www.googleapis.com/auth/calendar.readonly']
@@ -34,11 +35,21 @@ def fetch_calendar_events():
     try:
         creds = authenticate_google_calendar()
         service = build('calendar', 'v3', credentials=creds)
-        now = datetime.utcnow().isoformat() + 'Z'  # 'Z' indicates UTC time
+
+        # Get the current time in Eastern Time
+        eastern_tz = pytz.timezone("America/New_York")
+        now_eastern = datetime.now(eastern_tz)
+
+        # Convert to UTC for the Google Calendar API
+        now_utc = now_eastern.astimezone(pytz.utc)
+        now = now_utc.isoformat()  # ISO format for the API
+
+        # Fetch events starting from now
         events_result = service.events().list(
             calendarId='primary', timeMin=now,
             maxResults=5, singleEvents=True,
-            orderBy='startTime').execute()
+            orderBy='startTime'
+        ).execute()
         events = events_result.get('items', [])
         return events
     except Exception as e:
@@ -103,7 +114,7 @@ def update_calendar(calendar_label):
     else:
         calendar_text = "No upcoming events found."
     calendar_label.config(text=calendar_text)
-    calendar_label.after(10000, update_calendar, calendar_label)
+    calendar_label.after(600000, update_calendar, calendar_label)
 
 def main():
     config = get_config()
