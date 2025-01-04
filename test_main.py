@@ -8,6 +8,7 @@ def fetch_weather(api_key, lat, lon, units):
     try:
         url = f"http://api.openweathermap.org/data/2.5/weather"
         params = {"lat": lat, "lon": lon, "units": units, "appid": api_key}
+        print(f"Fetching weather with params: {params}")  # Debugging line
         response = requests.get(url)
         response.raise_for_status()
         data = response.json()
