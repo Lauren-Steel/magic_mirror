@@ -84,7 +84,7 @@ def fetch_weather(api_key, lat, lon, units):
 def update_time(time_label, time_format):
     """Update the time displayed on the label."""
     now = datetime.now()
-    time_string = now.strftime("%H:%M:%S" if time_format == 24 else "%I:%M:%S %p")
+    time_string = now.strftime("%H:%M" if time_format == 24 else "%I:%M %p")
     time_label.config(text=f"Time: {time_string}")
     time_label.after(1000, update_time, time_label, time_format)
 
@@ -129,34 +129,26 @@ def main():
     root.geometry("800x480")  # Adjust as per your display
     root.configure(bg="black")
 
-    # Header
-    header_label = tk.Label(
-        root, text="Smart Display", font=("Helvetica", 36, "bold"), fg="cyan", bg="black"
-    )
-    header_label.pack(pady=10)
-
     # Time Widget
-    time_label = tk.Label(root, text="", font=("Helvetica", 60, "bold"), fg="white", bg="black", borderwidth=2, relief="solid")
-    time_label.pack(pady=10)
+    time_label = tk.Label(
+        root, text="", font=("Times New Roman", 60, "bold"), fg="white", bg="black", borderwidth=2, relief="solid"
+    )
+    time_label.pack(anchor="w", pady=10, padx=20)
     update_time(time_label, config["time_format"])
 
     # Weather Widget
-    weather_label = tk.Label(root, text="Loading weather...", font=("Helvetica", 30), fg="white", bg="black", borderwidth=2, relief="solid")
-    weather_label.pack(pady=10)
+    weather_label = tk.Label(
+        root, text="Loading weather...", font=("Times New Roman", 30), fg="white", bg="black", borderwidth=2, relief="solid"
+    )
+    weather_label.pack(anchor="w", pady=10, padx=20)
     update_weather(weather_label, config)
 
     # Calendar Widget
     calendar_label = tk.Label(
-        root, text="Loading calendar...", font=("Helvetica", 20, "italic"), fg="white", bg="black", justify="left", anchor="w", borderwidth=2, relief="solid"
+        root, text="Loading calendar...", font=("Times New Roman", 20, "italic"), fg="white", bg="black", justify="left", anchor="w", borderwidth=2, relief="solid"
     )
-    calendar_label.pack(pady=10, padx=20)
+    calendar_label.pack(anchor="w", pady=10, padx=20)
     update_calendar(calendar_label)
-
-    # Footer
-    footer_label = tk.Label(
-        root, text="Powered by Raspberry Pi", font=("Helvetica", 14), fg="gray", bg="black"
-    )
-    footer_label.pack(side="bottom", pady=10)
 
     # Run the tkinter event loop
     root.mainloop()
