@@ -14,14 +14,72 @@ from PIL import Image, ImageTk, ImageOps
 SCOPES = ['https://www.googleapis.com/auth/calendar.readonly']
 
 weather_icon_map = {
-    "snow": "snow.png",
-    "clear sky": "default_sun.png",
-    "rain": "rainy.png",
-    "clouds": "cloudy.png",
-    "few clouds": "partly_cloudy.png",
+    # Thunderstorm group
+    "thunderstorm with light rain": "thunderstorm.png",
+    "thunderstorm with rain": "thunderstorm.png",
+    "thunderstorm with heavy rain": "thunderstorm.png",
+    "light thunderstorm": "thunderstorm.png",
+    "thunderstorm": "thunderstorm.png",
+    "heavy thunderstorm": "thunderstorm.png",
+    "ragged thunderstorm": "thunderstorm.png",
+    "thunderstorm with light drizzle": "thunderstorm.png",
+    "thunderstorm with drizzle": "thunderstorm.png",
+    "thunderstorm with heavy drizzle": "thunderstorm.png",
+
+    # Drizzle group
+    "light intensity drizzle": "rainy.png",
+    "drizzle": "rainy.png",
+    "heavy intensity drizzle": "rainy.png",
+    "light intensity drizzle rain": "rainy.png",
+    "drizzle rain": "rainy.png",
+    "heavy intensity drizzle rain": "rainy.png",
+    "shower rain and drizzle": "rainy.png",
+    "heavy shower rain and drizzle": "rainy.png",
+    "shower drizzle": "rainy.png",
+
+    # Rain group
     "light rain": "rainy.png",
-    "overcast clouds": "cloudy.png",
+    "moderate rain": "rainy.png",
+    "heavy intensity rain": "rainy.png",
+    "very heavy rain": "rainy.png",
+    "extreme rain": "rainy.png",
+    "freezing rain": "rainy.png",
+    "light intensity shower rain": "rainy.png",
+    "shower rain": "rainy.png",
+    "heavy intensity shower rain": "rainy.png",
+    "ragged shower rain": "rainy.png",
+
+    # Snow group
+    "light snow": "snow.png",
+    "snow": "snow.png",
+    "heavy snow": "snow.png",
+    "sleet": "snow.png",
+    "light shower sleet": "snow.png",
+    "shower sleet": "snow.png",
+    "light rain and snow": "snow.png",
+    "rain and snow": "snow.png",
+    "light shower snow": "snow.png",
+    "shower snow": "snow.png",
+    "heavy shower snow": "snow.png",
+
+    # Atmosphere group
+    "mist": "fog.png",
+    "smoke": "cloudy.png",
+    "haze": "cloudy.png",
+    "sand/dust whirls": "sandstorm.png",
+    "fog": "fog.png",
+    "sand": "sandstorm.png",
+    "dust": "sandstorm.png",
+    "volcanic ash": "sandstorm.png",
+    "squalls": "snow.png",
+    "tornado": "tornado.png",
+
+    # Clear and Clouds group
+    "clear sky": "default_sun.png",
+    "few clouds": "partly_cloudy.png",
+    "scattered clouds": "partly_clouds.png",
     "broken clouds": "cloudy.png",
+    "overcast clouds": "cloudy.png"
 }
 
 def authenticate_google_calendar():
