@@ -7,8 +7,8 @@ config = {
     "units": "metric",  # Units for weather ("metric" for Celsius, "imperial" for Fahrenheit)
     "weather": {
         "api_key": "2cf8cf9ed9af67c236990163ece2b97a",
-        "lat": 51.5074,
-        "lon": -0.1278,
+        "lat": 44.2312,
+        "lon": -76.4860,
         "units": "metric"
     },
     "time_format": 24,  # 24-hour or 12-hour time format
