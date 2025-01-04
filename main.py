@@ -56,20 +56,22 @@ def fetch_calendar_events():
         now_utc = now_eastern.astimezone(pytz.utc)
         now = now_utc.isoformat()  # ISO format for the API
 
-        print(f"TimeMin for API call: {now}")
-
         # Fetch events starting from now
         events_result = service.events().list(
             calendarId='primary', timeMin=now,
             maxResults=5, singleEvents=True,
             orderBy='startTime'
         ).execute()
+
+        # Safely fetch items from the API result
         events = events_result.get('items', [])
-        print(f"Fetched events: {events}")
+        print(f"Fetched events: {events}")  # Debugging line
         return events
     except Exception as e:
+        # Explicitly log the error and ensure empty list is returned
         print(f"Error fetching calendar events: {e}")
         return []
+
 
 def fetch_weather(api_key, lat, lon, units):
     """Fetch weather data from OpenWeatherMap API."""
@@ -132,7 +134,7 @@ def update_weather(weather_label, weather_icon_label, config):
         description = weather["description"].lower()
         icon_filename = weather_icon_map.get(description, "default_sun.png")  # Fallback to default icon
         try:
-            icon_path = f"icons/{icon_filename}"
+            icon_path = os.path.join(os.path.dirname(__file__), "icons", icon_filename)
             img = recolor_icon_to_white(icon_path)  # Recolor dynamically
             img = img.resize((50, 50))  # Resize icon
             icon = ImageTk.PhotoImage(img)
@@ -143,6 +145,7 @@ def update_weather(weather_label, weather_icon_label, config):
     else:
         weather_label.config(text="Error fetching weather data.")
     weather_label.after(600000, update_weather, weather_label, weather_icon_label, config)  # Update every 10 minutes
+
 
 def update_calendar(calendar_label):
     """Update the calendar events displayed on the label."""
