@@ -4,16 +4,15 @@ import requests
 from config import get_config
 
 def fetch_weather(api_key, lat, lon, units):
-    """Fetch weather data from OpenWeatherMap API."""
     try:
-        url = f"http://api.openweathermap.org/data/2.5/weather"
+        url = "http://api.openweathermap.org/data/2.5/weather"
         params = {"lat": lat, "lon": lon, "units": units, "appid": api_key}
-        print(f"Fetching weather with params: {params}")  # Debugging line
-        response = requests.get(url)
+        print(f"Fetching weather with params: {params}")
+        response = requests.get(url, params=params)
         print(f"Raw Response: {response.text}")  # Debugging line
         response.raise_for_status()
         data = response.json()
-        print(f"API Response: {data}")  # Debugging line
+        print(f"Parsed Data: {data}")  # Debugging line
         weather = {
             "temperature": data["main"]["temp"],
             "description": data["weather"][0]["description"].capitalize(),
@@ -21,7 +20,7 @@ def fetch_weather(api_key, lat, lon, units):
         }
         return weather
     except Exception as e:
-        print(f"Error fetching weather: {e}")
+        print(f"Error in fetch_weather: {e}")
         return None
 
 def update_time(time_label, time_format):
@@ -32,9 +31,11 @@ def update_time(time_label, time_format):
     time_label.after(1000, update_time, time_label, time_format)
 
 def update_weather(weather_label, config):
-    """Fetch and update weather data on the label."""
     weather = fetch_weather(
-        config["weather"]["api_key"], config["weather"]["lat"], config["weather"]["lon"], config["units"]
+        config["weather"]["api_key"],
+        config["weather"]["lat"],
+        config["weather"]["lon"],
+        config["weather"].get("units", "metric")
     )
     if weather:
         weather_text = (
@@ -44,7 +45,7 @@ def update_weather(weather_label, config):
         weather_label.config(text=weather_text)
     else:
         weather_label.config(text="Error fetching weather data.")
-    weather_label.after(600000, update_weather, weather_label, config)  # Update every 10 minutes
+    weather_label.after(600000, update_weather, weather_label, config)
 
 def main():
     config = get_config()
