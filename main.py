@@ -16,11 +16,12 @@ SCOPES = ['https://www.googleapis.com/auth/calendar.readonly']
 weather_icon_map = {
     "snow": "snow.png",
     "clear sky": "default_sun.png",
-    "rain": "rain.png",
-    "clouds": "cloud.png",
-    "few clouds": "partly_cloud.png",
-    "light rain": "rain.png",
-    "overcast clouds": "cloud.png",
+    "rain": "rainy.png",
+    "clouds": "cloudy.png",
+    "few clouds": "partly_cloudy.png",
+    "light rain": "rainy.png",
+    "overcast clouds": "cloudy.png",
+    "broken clouds": "cloudy.png",
 }
 
 def authenticate_google_calendar():
