@@ -10,6 +10,7 @@ def fetch_weather(api_key, lat, lon, units):
         params = {"lat": lat, "lon": lon, "units": units, "appid": api_key}
         print(f"Fetching weather with params: {params}")  # Debugging line
         response = requests.get(url)
+        print(f"Raw Response: {response.text}")  # Debugging line
         response.raise_for_status()
         data = response.json()
         print(f"API Response: {data}")  # Debugging line
