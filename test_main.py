@@ -12,6 +12,7 @@ def fetch_weather(api_key, lat, lon, units):
         response = requests.get(url)
         response.raise_for_status()
         data = response.json()
+        print(f"API Response: {data}")  # Debugging line
         weather = {
             "temperature": data["main"]["temp"],
             "description": data["weather"][0]["description"].capitalize(),
