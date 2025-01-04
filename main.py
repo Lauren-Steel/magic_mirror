@@ -163,7 +163,7 @@ def main():
     # Create main window
     root = tk.Tk()
     root.title("Smart Display")
-    root.geometry("800x480")  # Adjust as per your display
+    root.geometry("1920x1080")  # Adjust as per your display
     root.configure(bg="black")
 
     # Time Widget
