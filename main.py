@@ -14,11 +14,9 @@ SCOPES = ['https://www.googleapis.com/auth/calendar.readonly']
 def authenticate_google_calendar():
     """Authenticate with Google Calendar API."""
     creds = None
-    # Token storage to avoid re-authenticating every time
     if os.path.exists('token.pickle'):
         with open('token.pickle', 'rb') as token:
             creds = pickle.load(token)
-    # If no valid credentials, authenticate via OAuth
     if not creds or not creds.valid:
         if creds and creds.expired and creds.refresh_token:
             creds.refresh(Request())
@@ -26,7 +24,6 @@ def authenticate_google_calendar():
             flow = InstalledAppFlow.from_client_secrets_file(
                 'credentials.json', SCOPES)
             creds = flow.run_local_server(port=0)
-        # Save credentials for future use
         with open('token.pickle', 'wb') as token:
             pickle.dump(creds, token)
     return creds
@@ -50,11 +47,14 @@ def fetch_calendar_events():
 def fetch_weather(api_key, lat, lon, units):
     """Fetch weather data from OpenWeatherMap API."""
     try:
-        url = f"http://api.openweathermap.org/data/2.5/weather"
+        url = "http://api.openweathermap.org/data/2.5/weather"
         params = {"lat": lat, "lon": lon, "units": units, "appid": api_key}
-        response = requests.get(url)
+        print(f"Fetching weather with params: {params}")  # Debugging line
+        response = requests.get(url, params=params)
+        print(f"Raw Response: {response.text}")  # Debugging line
         response.raise_for_status()
         data = response.json()
+        print(f"Parsed Data: {data}")  # Debugging line
         weather = {
             "temperature": data["main"]["temp"],
             "description": data["weather"][0]["description"].capitalize(),
@@ -75,7 +75,10 @@ def update_time(time_label, time_format):
 def update_weather(weather_label, config):
     """Fetch and update weather data on the label."""
     weather = fetch_weather(
-        config["weather"]["api_key"], config["weather"]["lat"], config["weather"]["lon"], config["units"]
+        config["weather"]["api_key"],
+        config["weather"]["lat"],
+        config["weather"]["lon"],
+        config["weather"].get("units", "metric")
     )
     if weather:
         weather_text = (
@@ -85,7 +88,7 @@ def update_weather(weather_label, config):
         weather_label.config(text=weather_text)
     else:
         weather_label.config(text="Error fetching weather data.")
-    weather_label.after(600000, update_weather, weather_label, config)  # Update every 10 minutes
+    weather_label.after(600000, update_weather, weather_label, config)
 
 def update_calendar(calendar_label):
     """Update the calendar events displayed on the label."""
@@ -99,7 +102,7 @@ def update_calendar(calendar_label):
     else:
         calendar_text = "No upcoming events found."
     calendar_label.config(text=calendar_text)
-    calendar_label.after(600000, update_calendar, calendar_label)  # Update every 10 minutes
+    calendar_label.after(600000, update_calendar, calendar_label)
 
 def main():
     config = get_config()
