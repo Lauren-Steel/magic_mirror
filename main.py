@@ -57,7 +57,6 @@ def fetch_calendar_events():
         now = now_utc.isoformat()  # ISO format for the API
 
         print(f"TimeMin for API call: {now}")
-        print(f"Fetched events: {events}")
 
         # Fetch events starting from now
         events_result = service.events().list(
@@ -66,6 +65,7 @@ def fetch_calendar_events():
             orderBy='startTime'
         ).execute()
         events = events_result.get('items', [])
+        print(f"Fetched events: {events}")
         return events
     except Exception as e:
         print(f"Error fetching calendar events: {e}")
@@ -96,7 +96,7 @@ def update_time(time_label, time_format):
     """Update the time displayed on the label."""
     now = datetime.now()
     time_string = now.strftime("%H:%M" if time_format == 24 else "%I:%M %p")
-    time_label.config(text=f"Time: {time_string}")
+    time_label.config(text=f"{time_string}")
     time_label.after(1000, update_time, time_label, time_format)
 
 def recolor_icon_to_white(icon_path):
