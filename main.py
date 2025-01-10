@@ -156,6 +156,7 @@ def update_time(time_label, time_format):
     """Update the time displayed on the label."""
     now = datetime.now()
     time_string = now.strftime("%H:%M" if time_format == 24 else "%I:%M %p")
+    date_string = now.strftime("%A, %B %d, %Y")
     time_label.config(text=f"{time_string}")
     time_label.after(1000, update_time, time_label, time_format)
 
