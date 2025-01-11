@@ -157,7 +157,7 @@ def update_time(time_label, time_format):
     now = datetime.now()
     time_string = now.strftime("%H:%M" if time_format == 24 else "%I:%M %p")
     date_string = now.strftime("%A, %B %d, %Y")
-    time_label.config(text=f"{time_string}")
+    time_label.config(text=f"{date_string}\n{time_string}")
     time_label.after(1000, update_time, time_label, time_format)
 
 def recolor_icon_to_white(icon_path):
