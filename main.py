@@ -152,13 +152,19 @@ def fetch_weather(api_key, lat, lon, units):
         print(f"Error fetching weather: {e}")
         return None
 
-def update_time(time_label, time_format):
-    """Update the time displayed on the label."""
+def update_time_with_date(time_label, date_label, time_format):
+    """Update the time and date displayed on the labels."""
     now = datetime.now()
     time_string = now.strftime("%H:%M" if time_format == 24 else "%I:%M %p")
-    date_string = now.strftime("%A, %B %d, %Y")
-    time_label.config(text=f"{time_string}\n{date_string}")
-    time_label.after(1000, update_time, time_label, time_format)
+    date_string = now.strftime("%A, %B %d")
+
+    # Update labels
+    time_label.config(text=time_string)
+    date_label.config(text=date_string)
+
+    # Schedule the update every second
+    time_label.after(1000, update_time_with_date, time_label, date_label, time_format)
+
 
 def recolor_icon_to_white(icon_path):
     """Recolor the icon to white for better visibility on black background."""
@@ -239,11 +245,11 @@ def main():
     root.configure(bg="black")
 
     # Fonts
-    roboto_light = ("Roboto Light", 24)
-    roboto_large = ("Roboto Light", 48)
-    roboto_medium = ("Roboto Light", 36)
+    roboto_light = ("Roboto Light", 20)  # Smaller font for secondary text
+    roboto_large = ("Roboto Light", 44)  # Reduced size for time
+    roboto_medium = ("Roboto Light", 32)  # Adjusted size for weather location and temperature
 
-    # Time Widget (Top Right)
+    # Time and Date Widget (Top Right)
     time_label = tk.Label(
         root, 
         text="", 
@@ -253,8 +259,22 @@ def main():
         anchor="e", 
         justify="right"
     )
-    time_label.place(relx=0.8, rely=0.05)  # Top-right position
-    update_time(time_label, config["time_format"])
+    time_label.place(relx=0.75, rely=0.02)  # Adjusted position for better fit
+
+    # Date Widget
+    date_label = tk.Label(
+        root, 
+        text="", 
+        font=roboto_light,  # Smaller font for the date
+        fg="white", 
+        bg="black", 
+        anchor="e", 
+        justify="right"
+    )
+    date_label.place(relx=0.75, rely=0.1)  # Positioned below the time
+
+    # Update Time and Date
+    update_time_with_date(time_label, date_label, config["time_format"])
 
     # Weather Widget (Top Left)
     # Weather Location and Temperature
@@ -271,7 +291,7 @@ def main():
 
     # Weather Icon
     weather_icon_label = tk.Label(root, bg="black")
-    weather_icon_label.place(relx=0.20, rely=0.05)
+    weather_icon_label.place(relx=0.18, rely=0.05)
 
     # Weather Description
     description_label = tk.Label(
@@ -298,7 +318,7 @@ def main():
         justify="left", 
         anchor="nw"
     )
-    calendar_label.place(relx=0.05, rely=0.30)  # Center-left position
+    calendar_label.place(relx=0.05, rely=0.30)  # Adjusted slightly lower
     update_calendar(calendar_label)
 
     # Run the tkinter event loop
