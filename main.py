@@ -174,7 +174,7 @@ def recolor_icon_to_white(icon_path):
     img.putdata(new_data)
     return img
 
-def update_weather(weather_label, weather_icon_label, config):
+def update_weather(weather_label, weather_icon_label, description_label, config):
     """Fetch and update weather data and icon on the label."""
     weather = fetch_weather(
         config["weather"]["api_key"],
@@ -183,15 +183,20 @@ def update_weather(weather_label, weather_icon_label, config):
         config["weather"].get("units", "metric")
     )
     if weather:
-        weather_text = (
-            f"Weather in {weather['location']}:\n"
-            f"{weather['temperature']}°C, {weather['description']}"
-        )
-        weather_label.config(text=weather_text)
+        # Update the weather text
+        location = weather["location"]
+        temperature = f"{weather['temperature']}°C"
+        description = weather["description"].capitalize()
+
+        # Set location and temperature on the weather_label
+        weather_label.config(text=f"{location}\n{temperature}")
+
+        # Set the description on the description_label
+        description_label.config(text=description)
 
         # Update the weather icon
-        description = weather["description"].lower()
-        icon_filename = weather_icon_map.get(description, "default_sun.png")  # Fallback to default icon
+        description_key = weather["description"].lower()
+        icon_filename = weather_icon_map.get(description_key, "default_sun.png")  # Fallback to default icon
         try:
             icon_path = os.path.join(os.path.dirname(__file__), "weather_icons", icon_filename)
             img = recolor_icon_to_white(icon_path)  # Recolor dynamically
@@ -202,8 +207,12 @@ def update_weather(weather_label, weather_icon_label, config):
         except Exception as e:
             print(f"Error loading weather icon: {e}")
     else:
-        weather_label.config(text="Error fetching weather data.")
-    weather_label.after(600000, update_weather, weather_label, weather_icon_label, config)  # Update every 10 minutes
+        # Handle errors
+        weather_label.config(text="Weather data unavailable")
+        description_label.config(text="")
+
+    # Schedule next update
+    weather_label.after(600000, update_weather, weather_label, weather_icon_label, description_label, config)  # Update every 10 minutes
 
 
 def update_calendar(calendar_label):
@@ -229,35 +238,72 @@ def main():
     root.geometry("1920x1080")  # Adjust as per your display
     root.configure(bg="black")
 
-    # Time Widget
+    # Fonts
+    roboto_light = ("Roboto Light", 24)
+    roboto_large = ("Roboto Light", 48)
+    roboto_medium = ("Roboto Light", 36)
+
+    # Time Widget (Top Right)
     time_label = tk.Label(
-        root, text="", font=("Times New Roman", 60, "bold"), fg="white", bg="black", borderwidth=2, relief="solid"
+        root, 
+        text="", 
+        font=roboto_large, 
+        fg="white", 
+        bg="black", 
+        anchor="e", 
+        justify="right"
     )
-    time_label.pack(anchor="w", pady=10, padx=20)
+    time_label.place(relx=0.8, rely=0.05)  # Top-right position
     update_time(time_label, config["time_format"])
 
-    # Weather Widget
+    # Weather Widget (Top Left)
+    # Weather Location and Temperature
     weather_label = tk.Label(
-        root, text="Loading weather...", font=("Times New Roman", 30), fg="white", bg="black", borderwidth=2, relief="solid"
+        root, 
+        text="Loading weather...", 
+        font=roboto_medium, 
+        fg="white", 
+        bg="black", 
+        anchor="w", 
+        justify="left"
     )
-    weather_label.pack(anchor="w", pady=10, padx=20)
+    weather_label.place(relx=0.05, rely=0.05)
 
     # Weather Icon
     weather_icon_label = tk.Label(root, bg="black")
-    weather_icon_label.pack(anchor="w", padx=20, pady=5)
+    weather_icon_label.place(relx=0.20, rely=0.05)
 
-    # Corrected call to update_weather
-    update_weather(weather_label, weather_icon_label, config)
-
-    # Calendar Widget
-    calendar_label = tk.Label(
-        root, text="Loading calendar...", font=("Times New Roman", 20, "italic"), fg="white", bg="black", justify="left", anchor="w", borderwidth=2, relief="solid"
+    # Weather Description
+    description_label = tk.Label(
+        root, 
+        text="", 
+        font=roboto_light, 
+        fg="white", 
+        bg="black", 
+        anchor="w", 
+        justify="left"
     )
-    calendar_label.pack(anchor="w", pady=10, padx=20)
+    description_label.place(relx=0.05, rely=0.12)
+
+    # Update Weather
+    update_weather(weather_label, weather_icon_label, description_label, config)
+
+    # Calendar Widget (Center Left)
+    calendar_label = tk.Label(
+        root, 
+        text="Loading calendar...", 
+        font=roboto_light, 
+        fg="white", 
+        bg="black", 
+        justify="left", 
+        anchor="nw"
+    )
+    calendar_label.place(relx=0.05, rely=0.30)  # Center-left position
     update_calendar(calendar_label)
 
     # Run the tkinter event loop
     root.mainloop()
+
 
 if __name__ == "__main__":
     main()
