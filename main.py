@@ -206,7 +206,7 @@ def update_weather(weather_label, weather_icon_label, description_label, config)
         try:
             icon_path = os.path.join(os.path.dirname(__file__), "weather_icons", icon_filename)
             img = recolor_icon_to_white(icon_path)  # Recolor dynamically
-            img = img.resize((50, 50))  # Resize icon
+            img = img.resize((70, 70))  # Resize icon (increased size)
             icon = ImageTk.PhotoImage(img)
             weather_icon_label.config(image=icon)
             weather_icon_label.image = icon  # Keep reference to avoid garbage collection
@@ -291,7 +291,7 @@ def main():
 
     # Weather Icon
     weather_icon_label = tk.Label(root, bg="black")
-    weather_icon_label.place(relx=0.22, rely=0.05)  # Positioned beside the temperature
+    weather_icon_label.place(relx=0.19, rely=0.045)  # Adjusted for larger icon
 
     # Weather Description
     description_label = tk.Label(
@@ -303,7 +303,7 @@ def main():
         anchor="w",
         justify="left"
     )
-    description_label.place(relx=0.05, rely=0.14)  # Moved down to avoid overlap
+    description_label.place(relx=0.05, rely=0.16)  # Moved further down
 
     # Update Weather
     update_weather(weather_label, weather_icon_label, description_label, config)
@@ -318,7 +318,7 @@ def main():
         justify="left",
         anchor="nw"
     )
-    calendar_label.place(relx=0.05, rely=0.35)  # Moved lower for better spacing
+    calendar_label.place(relx=0.05, rely=0.35)  # Positioned lower for better spacing
     update_calendar(calendar_label)
 
     # Run the tkinter event loop
