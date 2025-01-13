@@ -246,32 +246,32 @@ def main():
 
     # Fonts
     roboto_light = ("Roboto Light", 20)  # Smaller font for secondary text
-    roboto_large = ("Roboto Light", 44)  # Reduced size for time
-    roboto_medium = ("Roboto Light", 32)  # Adjusted size for weather location and temperature
+    roboto_large = ("Roboto Light", 56)  # Largest font for time
+    roboto_medium = ("Roboto Light", 32)  # Medium font for weather location and temperature
 
-    # Time and Date Widget (Top Right)
+    # Time Widget (Top Right)
     time_label = tk.Label(
-        root, 
-        text="", 
-        font=roboto_large, 
-        fg="white", 
-        bg="black", 
-        anchor="e", 
+        root,
+        text="",
+        font=roboto_large,
+        fg="white",
+        bg="black",
+        anchor="e",
         justify="right"
     )
-    time_label.place(relx=0.75, rely=0.02)  # Adjusted position for better fit
+    time_label.place(relx=0.7, rely=0.02)  # Positioned slightly left to ensure visibility
 
     # Date Widget
     date_label = tk.Label(
-        root, 
-        text="", 
+        root,
+        text="",
         font=roboto_light,  # Smaller font for the date
-        fg="white", 
-        bg="black", 
-        anchor="e", 
+        fg="white",
+        bg="black",
+        anchor="e",
         justify="right"
     )
-    date_label.place(relx=0.75, rely=0.1)  # Positioned below the time
+    date_label.place(relx=0.7, rely=0.1)  # Positioned below the time
 
     # Update Time and Date
     update_time_with_date(time_label, date_label, config["time_format"])
@@ -279,46 +279,46 @@ def main():
     # Weather Widget (Top Left)
     # Weather Location and Temperature
     weather_label = tk.Label(
-        root, 
-        text="Loading weather...", 
-        font=roboto_medium, 
-        fg="white", 
-        bg="black", 
-        anchor="w", 
+        root,
+        text="Loading weather...",
+        font=roboto_medium,
+        fg="white",
+        bg="black",
+        anchor="w",
         justify="left"
     )
-    weather_label.place(relx=0.05, rely=0.05)
+    weather_label.place(relx=0.05, rely=0.05)  # Top-left corner
 
     # Weather Icon
     weather_icon_label = tk.Label(root, bg="black")
-    weather_icon_label.place(relx=0.18, rely=0.05)
+    weather_icon_label.place(relx=0.22, rely=0.05)  # Positioned beside the temperature
 
     # Weather Description
     description_label = tk.Label(
-        root, 
-        text="", 
-        font=roboto_light, 
-        fg="white", 
-        bg="black", 
-        anchor="w", 
+        root,
+        text="",
+        font=roboto_light,  # Smaller font for description
+        fg="white",
+        bg="black",
+        anchor="w",
         justify="left"
     )
-    description_label.place(relx=0.05, rely=0.12)
+    description_label.place(relx=0.05, rely=0.14)  # Moved down to avoid overlap
 
     # Update Weather
     update_weather(weather_label, weather_icon_label, description_label, config)
 
-    # Calendar Widget (Center Left)
+    # Calendar Widget (Lower Left)
     calendar_label = tk.Label(
-        root, 
-        text="Loading calendar...", 
-        font=roboto_light, 
-        fg="white", 
-        bg="black", 
-        justify="left", 
+        root,
+        text="Loading calendar...",
+        font=roboto_light,
+        fg="white",
+        bg="black",
+        justify="left",
         anchor="nw"
     )
-    calendar_label.place(relx=0.05, rely=0.30)  # Adjusted slightly lower
+    calendar_label.place(relx=0.05, rely=0.35)  # Moved lower for better spacing
     update_calendar(calendar_label)
 
     # Run the tkinter event loop
