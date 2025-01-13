@@ -287,11 +287,11 @@ def main():
         anchor="w",
         justify="left"
     )
-    weather_label.place(relx=0.05, rely=0.08)  # Moved temperature slightly down
+    weather_label.place(relx=0.05, rely=0.05)  # Top-left corner
 
     # Weather Icon
     weather_icon_label = tk.Label(root, bg="black")
-    weather_icon_label.place(relx=0.22, rely=0.09)  # Moved icon down and to the right
+    weather_icon_label.place(relx=0.17, rely=0.05)  # Adjusted for larger icon
 
     # Weather Description
     description_label = tk.Label(
@@ -303,7 +303,7 @@ def main():
         anchor="w",
         justify="left"
     )
-    description_label.place(relx=0.05, rely=0.16)  # Ensures no overlap with the temperature
+    description_label.place(relx=0.05, rely=0.14)  # Moved further down
 
     # Update Weather
     update_weather(weather_label, weather_icon_label, description_label, config)
