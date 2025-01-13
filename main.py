@@ -291,7 +291,7 @@ def main():
 
     # Weather Icon
     weather_icon_label = tk.Label(root, bg="black")
-    weather_icon_label.place(relx=0.17, rely=0.05)  # Adjusted for larger icon
+    weather_icon_label.place(relx=0.17, rely=0.08)  # Adjusted for larger icon
 
     # Weather Description
     description_label = tk.Label(
@@ -303,7 +303,7 @@ def main():
         anchor="w",
         justify="left"
     )
-    description_label.place(relx=0.05, rely=0.14)  # Moved further down
+    description_label.place(relx=0.05, rely=0.16)  # Moved further down
 
     # Update Weather
     update_weather(weather_label, weather_icon_label, description_label, config)
