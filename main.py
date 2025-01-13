@@ -303,7 +303,7 @@ def main():
         anchor="w",
         justify="left"
     )
-    description_label.place(relx=0.05, rely=0.16)  # Moved further down
+    description_label.place(relx=0.05, rely=0.15)  # Moved further down
 
     # Update Weather
     update_weather(weather_label, weather_icon_label, description_label, config)
