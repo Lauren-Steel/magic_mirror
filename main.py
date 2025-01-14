@@ -93,7 +93,7 @@ def authenticate_google_calendar():
             creds.refresh(Request())
         else:
             flow = InstalledAppFlow.from_client_secrets_file(
-                '/home/capstone/secure_credentials/googlecal_credentials.json', SCOPES
+                '/Users/laurensteel/Documents/5X/cap_stone/secure_credentials/googlecal_credentials.json', SCOPES
             )
             creds = flow.run_local_server(port=0)
         with open('token.pickle', 'wb') as token:
@@ -143,7 +143,7 @@ def fetch_weather(api_key, lat, lon, units):
         data = response.json()
         print(f"Parsed Data: {data}")  # Debugging line
         weather = {
-            "temperature": data["main"]["temp"],
+            "temperature": round(data["main"]["temp"]),  # Round temperature to nearest integer
             "description": data["weather"][0]["description"].capitalize(),
             "location": data["name"],
         }
