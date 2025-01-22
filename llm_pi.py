@@ -22,7 +22,7 @@ def main():
     # Continuously wait for a prompt
     while True:
         try:
-            with sr.Microphone() as source:
+            with sr.Microphone(device_index=2) as source:
                 # Optionally reduce background noise:
                 recognizer.adjust_for_ambient_noise(source, duration=5)
 
