@@ -1,0 +1,11 @@
+pyttsx3
+SpeechRecognition
+ollama
+PyAudio
+pyobjc
+google-api-python-client
+google-auth-oauthlib
+google-auth
+requests
+pytz
+Pillow

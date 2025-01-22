@@ -3,7 +3,7 @@ import speech_recognition as sr
 import pyttsx3
 
 # Name of your Ollama model
-modelname = "virualassistant2.0"
+modelname = "llama3.2"
 
 
 def main():

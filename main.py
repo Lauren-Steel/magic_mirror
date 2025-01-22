@@ -93,7 +93,7 @@ def authenticate_google_calendar():
             creds.refresh(Request())
         else:
             flow = InstalledAppFlow.from_client_secrets_file(
-                '/Users/laurensteel/Documents/5X/cap_stone/secure_credentials/googlecal_credentials.json', SCOPES
+                '/home/capstone/secure_credentials/googlecal_credentials.json', SCOPES
             )
             creds = flow.run_local_server(port=0)
         with open('token.pickle', 'wb') as token:
