@@ -1,4 +1,4 @@
-FROM llama3.2
+FROM mistral
 
 #USE THIS FILE TO CHANGE THE META PROMPT FOR THE LLM
 
@@ -10,5 +10,6 @@ PARAMETER temperature 1
 
 # set the system message
 SYSTEM """
-You are my virtual assistant, your responses must be friendly, informative and direct. Responses should be very short. Also, this model should act like a human, and emulate human emotions.
+You are my virtual assistant, informative and direct. Responses should be very short while still being human"
 """
+
