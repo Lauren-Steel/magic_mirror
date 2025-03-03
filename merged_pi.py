@@ -17,7 +17,7 @@ import threading
 
 # --- Global Constants ---
 SCOPES = ['https://www.googleapis.com/auth/calendar.readonly']
-modelname = "VirtualAssistant3.0"  # Name of your Ollama model
+modelname = "MirrorAssistant1.0"  # Name of your Ollama model
 
 # Mapping for weather icons based on description
 weather_icon_map = {

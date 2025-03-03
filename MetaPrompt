@@ -1,4 +1,4 @@
-FROM mistral
+FROM llama3.2
 
 #USE THIS FILE TO CHANGE THE META PROMPT FOR THE LLM
 #MirrorAssistant1.0
