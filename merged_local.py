@@ -17,7 +17,10 @@ import threading
 
 # --- Global Constants ---
 SCOPES = ['https://www.googleapis.com/auth/calendar.readonly']
-modelname = "llama3.2"  # Name of your Ollama model
+modelname = "MirrorAssistant1.0"  # Name of your Ollama model
+
+# Path to the Google Calendar credentials JSON file
+credentials_file = r"C:\Users\omarb\OneDrive\Documents\Credentials\googlecal_credentials.json"  
 
 # Mapping for weather icons based on description
 weather_icon_map = {
@@ -84,7 +87,7 @@ weather_icon_map = {
     # Clear and Clouds group
     "clear sky": "default_sun.png",
     "few clouds": "partly_cloudy.png",
-    "scattered clouds": "partly_clouds.png",
+    "scattered clouds": "partly_cloudy.png",
     "broken clouds": "cloudy.png",
     "overcast clouds": "cloudy.png"
 }
@@ -100,9 +103,7 @@ def authenticate_google_calendar():
         if creds and creds.expired and creds.refresh_token:
             creds.refresh(Request())
         else:
-            flow = InstalledAppFlow.from_client_secrets_file(
-                '/Users/laurensteel/Documents/5X/cap_stone/secure_credentials/googlecal_credentials.json', SCOPES   #CHANGE LOCATION OF JSON FILE HERE!!!
-            )
+            flow = InstalledAppFlow.from_client_secrets_file(credentials_file, SCOPES) 
             creds = flow.run_local_server(port=0)
         with open('token.pickle', 'wb') as token:
             pickle.dump(creds, token)
@@ -290,6 +291,7 @@ def main():
 
     root = tk.Tk()
     root.title("Smart Display with LLM")
+    root.attributes("-fullscreen", True)
     root.geometry("1920x1080")
     root.configure(bg="black")
 
@@ -298,7 +300,7 @@ def main():
     roboto_large = ("Roboto Light", 56)
     roboto_medium = ("Roboto Light", 32)
 
-    # Top Right Section: Time, Date, Weather and Calendar
+    # --- Top Right Section: Time, Date, Weather, and Calendar ---
     time_label = tk.Label(root, text="", font=roboto_large, fg="white", bg="black", anchor="e", justify="right")
     time_label.place(relx=0.7, rely=0.02)
     
@@ -306,32 +308,31 @@ def main():
     date_label.place(relx=0.7, rely=0.1)
     update_time_with_date(time_label, date_label, config["time_format"])
 
-    # Weather Section (placed below Date)
     weather_label = tk.Label(root, text="Loading weather...", font=roboto_medium, fg="white", bg="black", anchor="w", justify="left")
     weather_label.place(relx=0.7, rely=0.18)
     
     weather_icon_label = tk.Label(root, bg="black")
-    weather_icon_label.place(relx=0.9, rely=0.18)  # Positioned to the right of weather_label
+    weather_icon_label.place(relx=0.9, rely=0.18)
     
     description_label = tk.Label(root, text="", font=roboto_light, fg="white", bg="black", anchor="w", justify="left")
     description_label.place(relx=0.7, rely=0.27)
     update_weather(weather_label, weather_icon_label, description_label, config)
 
-    # Calendar Section (placed below Weather)
     calendar_label = tk.Label(root, text="Loading calendar...", font=roboto_light, fg="white", bg="black", anchor="w", justify="left")
     calendar_label.place(relx=0.7, rely=0.35, relwidth=0.25, relheight=0.2)
     update_calendar(calendar_label)
 
-    # LLM Conversation Widget (Bottom Left)
-    llm_text_widget = tk.Text(root, font=("Roboto Light", 16), fg="white", bg="black", wrap="word")
+    # --- Left Section: LLM Conversation Widget ---
+    # Increased the font size for better readability
+    llm_text_widget = tk.Text(root, font=("Roboto Light", 32), fg="white", bg="black", wrap="word")
     llm_text_widget.place(relx=0.02, rely=0.02, relwidth=0.46, relheight=0.96)
-
-
 
     # Start the LLM conversation thread (pass config as argument)
     threading.Thread(target=llm_conversation_thread, args=(llm_text_widget, config), daemon=True).start()
 
     root.mainloop()
 
+
 if __name__ == "__main__":
     main()
+
