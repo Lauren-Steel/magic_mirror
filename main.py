@@ -260,9 +260,9 @@ def llm_conversation_thread(llm_text_widget, config):
     while True:
         try:
             with sr.Microphone() as source:
-                recognizer.adjust_for_ambient_noise(source, duration=5)
+                recognizer.adjust_for_ambient_noise(source, duration=2)
                 update_text_widget(llm_text_widget, "\nListening for your prompt...")
-                audio_data = recognizer.listen(source, timeout=None, phrase_time_limit=20)
+                audio_data = recognizer.listen(source, timeout=None, phrase_time_limit=60)
             prompt = recognizer.recognize_google(audio_data).strip()
             update_text_widget(llm_text_widget, f"\nYou said: {prompt}")
             if prompt.lower() in ["stop", "exit"]:
